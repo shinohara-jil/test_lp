@@ -367,25 +367,24 @@
             transform: scale(1.05);
         }
 
-        /* --- 循環エリア（PKSHAの図解をモダンに） --- */
+        /* --- 循環エリア（3つの円） --- */
         .cycle-section {
             padding: 5rem 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             position: relative;
+            overflow: hidden;
         }
 
         .cycle-container {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
             position: relative;
+            width: 100%;
+            max-width: 900px;
+            height: 700px;
+            margin: 0 auto;
         }
 
         .cycle-circle {
-            width: 350px;
-            height: 350px;
+            width: 260px;
+            height: 260px;
             border-radius: 50%;
             border: 1px solid rgba(0, 0, 0, 0.1);
             display: flex;
@@ -393,19 +392,46 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(5px);
-            position: relative;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: absolute;
             z-index: 2;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
         }
 
-        .cycle-center {
-            width: 200px;
-            text-align: center;
-            font-weight: bold;
-            font-family: var(--font-mincho);
-            position: relative;
-            z-index: 1;
+        .cycle-circle:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .cycle-circle h3 {
+            font-family: var(--font-en);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .cycle-circle p {
+            font-family: var(--font-jp);
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+
+        .cycle-top {
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cycle-left {
+            bottom: 50px;
+            left: 50px;
+        }
+
+        .cycle-right {
+            bottom: 50px;
+            right: 50px;
         }
 
         /* 柔らかい点線のアニメーション */
@@ -416,6 +442,7 @@
             top: 0;
             left: 0;
             pointer-events: none;
+            z-index: 1;
         }
 
         .cycle-connect svg {
@@ -426,7 +453,7 @@
 
         .path-anim {
             stroke-dasharray: 10;
-            animation: dash 30s linear infinite;
+            animation: dash 60s linear infinite;
         }
 
         @keyframes dash {
@@ -492,30 +519,51 @@
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.8);
-            padding: 4rem;
             border-radius: 30px;
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .company-image {
+            width: 40%;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .company-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .company-content {
+            width: 60%;
+            padding: 4rem;
         }
 
         .company-dl {
             display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 2rem;
+            grid-template-columns: 150px 1fr;
+            gap: 1.5rem;
         }
 
         .company-dl dt {
             font-weight: 700;
             color: var(--text-sub);
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
         }
 
         .company-dl dd {
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
         }
 
         /* --- Recruit Section --- */
@@ -660,16 +708,45 @@
             }
 
             .cycle-container {
+                height: auto;
                 flex-direction: column;
+                padding-bottom: 2rem;
             }
 
             .cycle-circle {
-                width: 280px;
-                height: 280px;
+                position: relative;
+                width: 240px;
+                height: 240px;
+                margin: 0 auto 2rem;
+                transform: none !important;
+                top: auto;
+                left: auto;
+                right: auto;
+                bottom: auto;
+            }
+
+            .cycle-connect {
+                display: none;
+                /* モバイルでは線消す */
             }
 
             .service-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .company-box {
+                flex-direction: column;
+            }
+
+            .company-image {
+                width: 100%;
+                height: 250px;
+                min-height: auto;
+            }
+
+            .company-content {
+                width: 100%;
+                padding: 2rem;
             }
 
             .company-dl {
@@ -730,27 +807,32 @@
 
     <section class="cycle-section fade-in-up">
         <div class="cycle-container">
-            <div class="cycle-circle">
-                <h3>Design<br>Engineering</h3>
-                <p style="font-size: 0.8rem; margin-top:10px; color:#666;">課題の本質を<br>美しく解く</p>
+            <div class="cycle-circle cycle-top">
+                <h3>Bidev</h3>
+                <p>事業開発</p>
             </div>
 
-            <div class="cycle-center">
-                相互進化<br>
-                <span style="font-size:2rem;">∞</span>
+            <div class="cycle-circle cycle-left">
+                <h3>Execution</h3>
+                <p>実行</p>
             </div>
 
-            <div class="cycle-circle">
-                <h3>Social<br>Implementation</h3>
-                <p style="font-size: 0.8rem; margin-top:10px; color:#666;">新しい価値を<br>社会へ還流する</p>
+            <div class="cycle-circle cycle-right">
+                <h3>Tech</h3>
+                <p>AI / DX</p>
             </div>
 
             <div class="cycle-connect">
-                <svg>
-                    <path d="M 100 175 Q 500 50 900 175" fill="none" stroke="#ff9a9e" stroke-width="2" class="path-anim"
-                        opacity="0.5" />
-                    <path d="M 100 175 Q 500 300 900 175" fill="none" stroke="#a18cd1" stroke-width="2"
-                        class="path-anim" opacity="0.5" style="animation-direction: reverse;" />
+                <svg viewBox="0 0 900 700">
+                    <!-- Top to Left -->
+                    <path d="M 450 180 Q 200 350 180 570" fill="none" stroke="#ff9a9e" stroke-width="2"
+                        class="path-anim" opacity="0.5" />
+                    <!-- Left to Right -->
+                    <path d="M 180 570 Q 450 650 720 570" fill="none" stroke="#a18cd1" stroke-width="2"
+                        class="path-anim" opacity="0.5" style="animation-delay: -10s;" />
+                    <!-- Right to Top -->
+                    <path d="M 720 570 Q 700 350 450 180" fill="none" stroke="#fad0c4" stroke-width="2"
+                        class="path-anim" opacity="0.5" style="animation-delay: -20s;" />
                 </svg>
             </div>
         </div>
@@ -822,18 +904,24 @@
                 <p>私たちについて</p>
             </div>
             <div class="company-box">
-                <dl class="company-dl">
-                    <dt>会社名</dt>
-                    <dd>株式会社ORGANIC INC.</dd>
-                    <dt>設立</dt>
-                    <dd>2020年4月1日</dd>
-                    <dt>代表者</dt>
-                    <dd>代表取締役CEO 山田 太郎</dd>
-                    <dt>所在地</dt>
-                    <dd>〒107-0062 東京都港区南青山3-1-30</dd>
-                    <dt>事業内容</dt>
-                    <dd>ブランドコンサルティング、UI/UXデザイン、システム開発</dd>
-                </dl>
+                <div class="company-image">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop"
+                        alt="Company Office">
+                </div>
+                <div class="company-content">
+                    <dl class="company-dl">
+                        <dt>会社名</dt>
+                        <dd>株式会社ORGANIC INC.</dd>
+                        <dt>設立</dt>
+                        <dd>2020年4月1日</dd>
+                        <dt>代表者</dt>
+                        <dd>代表取締役CEO 山田 太郎</dd>
+                        <dt>所在地</dt>
+                        <dd>〒107-0062 東京都港区南青山3-1-30</dd>
+                        <dt>事業内容</dt>
+                        <dd>ブランドコンサルティング、UI/UXデザイン、システム開発</dd>
+                    </dl>
+                </div>
             </div>
         </div>
     </section>
