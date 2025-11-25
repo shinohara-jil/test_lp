@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Standard & Japanese Craftsmanship</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* =========================================
+           1. Design Tokens (Color & Typography)
+           ========================================= */
+        :root {
+            /* Colors */
+            --color-bg: #FDFCF8;
+            --color-text-main: #1a1a1a;
+            --color-text-sub: #666666;
+            --color-accent-terracotta: #B07840;
+            --color-accent-forest: #3F6B3A;
+            --color-highlight: #D48E5E;
+            --color-footer-bg: #222222;
+            --color-white: #ffffff;
+
+            /* Typography */
+            --font-en: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+
+            /* Animation Easing */
+            --ease-rich: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* =========================================
+           2. Base Styles
+           ========================================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            font-family: var(--font-en);
+            /* Default to EN font, switch to JP via unicode-range or classes implies mix */
+            font-family: var(--font-en), var(--font-jp);
+            /* Fallback chain */
+            line-height: 1.6;
+            letter-spacing: 0.05em;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        p {
+            color: var(--color-text-sub);
+            font-weight: 400;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        /* =========================================
+           3. Navigation (Sticky & Glassmorphism)
+           ========================================= */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(253, 252, 248, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--color-accent-terracotta);
+        }
+
+        .btn-contact {
+            background-color: #000;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border-radius: 999px;
+            /* Pill shape */
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: transform 0.3s var(--ease-rich), background-color 0.3s ease;
+        }
+
+        .btn-contact:hover {
+            transform: scale(1.05);
+            background-color: #333;
+            /* Slightly lighter on hover */
+        }
+
+        /* =========================================
+           4. Hero Section (Bento Grid)
+           ========================================= */
+        .hero {
+            padding: 4rem 5%;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 3rem;
+            max-width: 900px;
+        }
+
+        /* Marker Highlight */
+        .highlight {
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            left: -5px;
+            bottom: 5px;
+            width: calc(100% + 10px);
+            height: 0.4em;
+            background-color: var(--color-highlight);
+            opacity: 0.5;
+            z-index: -1;
+            transform: rotate(-1deg);
+            border-radius: 2px;
+        }
+
+        /* Grid Layout */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            height: auto;
+        }
+
+        @media (min-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1.6fr 1fr;
+                /* Asymmetric split */
+                grid-template-rows: repeat(2, 320px);
+                height: 660px;
+                /* 320*2 + 20gap */
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            /* Initial state for scroll reveal handles transform, 
+               so we avoid transition conflict on hover by being specific */
+        }
+
+        .card-image-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+            /* Slow parallax feel */
+            display: block;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 2rem;
+            z-index: 2;
+            width: 100%;
+        }
+
+        /* Gradient overlay for text readability */
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .card h3 {
+            color: var(--color-white);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        /* Specific Card Sizes & Colors */
+        .card-large {
+            /* Occupies left side (full height on desktop) */
+            grid-row: span 2;
+        }
+
+        .card-brand-1 {
+            background-color: var(--color-accent-terracotta);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .card-brand-2 {
+            background-color: var(--color-accent-forest);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Text-only cards style override */
+        .text-card-content {
+            padding: 3rem;
+            color: var(--color-white);
+            z-index: 2;
+            position: relative;
+        }
+
+        .text-card-content h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .text-card-content p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+
+        /* =========================================
+           5. Content Sections
+           ========================================= */
+        .section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-accent-terracotta);
+            font-weight: 700;
+        }
+
+        .text-block {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--color-text-sub);
+        }
+
+        /* =========================================
+           6. Footer
+           ========================================= */
+        footer {
+            background-color: var(--color-footer-bg);
+            color: #fff;
+            padding: 5rem 5%;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: #999;
+        }
+
+        /* =========================================
+           7. Animations (Scroll Reveal)
+           ========================================= */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s var(--ease-rich), transform 1s var(--ease-rich);
+        }
+
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger delay helper */
+        .delay-100 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">MINIMAL</div>
+        <div class="nav-links">
+            <a href="#" class="nav-item">About</a>
+            <a href="#" class="nav-item">Works</a>
+            <a href="#" class="nav-item">Journal</a>
+        </div>
+        <a href="#" class="btn-contact">Contact</a>
+    </nav>
+
+    <header class="hero">
+        <h1 class="hero-title reveal-on-scroll">
+            Connecting the world with<br>
+            <span class="highlight">Japanese Craftsmanship.</span>
+        </h1>
+
+        <div class="bento-grid">
+            <div class="card card-large reveal-on-scroll delay-100">
+                <div class="card-image-container">
+                    <div class="card-overlay"></div>
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop"
+                        alt="Modern Architecture" class="card-img">
+                </div>
+                <div class="card-content">
+                    <h3>Vision & Philosophy</h3>
+                    <p>静寂の中に宿る、確かな技術。</p>
+                </div>
+            </div>
+
+            <div class="card card-brand-1 reveal-on-scroll delay-200">
+                <div class="text-card-content">
+                    <h3>Craft</h3>
+                    <p>Handmade details.</p>
+                </div>
+            </div>
+
+            <div class="card card-brand-2 reveal-on-scroll delay-300">
+                <div class="card-image-container">
+                    <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2500&auto=format&fit=crop"
+                        alt="Design Object" class="card-img">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="section-header reveal-on-scroll">
+            <span class="section-label">01 — Philosophy</span>
+            <h2>Global Standard,<br>Local Roots.</h2>
+        </div>
+        <div class="grid-layout">
+            <p class="text-block reveal-on-scroll delay-100">
+                私たちは、シリコンバレーの大胆な思考と、日本の繊細な美意識を融合させます。<br>
+                奇をてらった装飾は必要ありません。本質的な価値だけを、最も美しい形で届けること。<br>
+                それが私たちの定義する「ミニマル・ラグジュアリー」です。
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="reveal-on-scroll">
+            <h2>Let's create something timeless.</h2>
+            <p style="margin-top: 1rem;">© 2024 MINIMAL Inc. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 // Trigger when 15% of element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, observerOptions);
+
+            const elements = document.querySelectorAll('.reveal-on-scroll');
+            elements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+
+</html>

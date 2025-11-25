@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitta DuPont Clone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #001e42;
+            /* Dark Navy */
+            --accent-blue: #2b50b8;
+            /* Royal Blue */
+            --light-blue: #eef4fa;
+            /* Background Light */
+            --text-main: #111;
+            --text-sub: #666;
+            --white: #ffffff;
+            --font-jp: "Noto Sans JP", sans-serif;
+            --font-en: "Roboto", sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-jp);
+            color: var(--text-main);
+            background-color: var(--white);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Utility */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: var(--font-en);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Simplified Logo for demo */
+        .logo span:first-child {
+            color: var(--primary-blue);
+        }
+
+        .logo span:last-child {
+            color: #d00;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #cce0f5 0%, #ffffff 50%, #cce0f5 100%);
+            overflow: hidden;
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-blue), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        /* Section: Company */
+        .company-section {
+            position: relative;
+            background-color: var(--white);
+        }
+
+        .company-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .section-label {
+            display: inline-block;
+            background-color: #f0f4f8;
+            color: #7a8ba0;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 4rem;
+            font-family: var(--font-en);
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            line-height: 1;
+        }
+
+        .section-desc {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 3rem;
+            font-weight: 500;
+        }
+
+        .link-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-top: 1px solid #eee;
+            color: var(--primary-blue);
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .link-item:last-child {
+            border-bottom: 1px solid #eee;
+        }
+
+        .link-item:hover {
+            color: var(--accent-blue);
+        }
+
+        .link-arrow {
+            transition: transform 0.3s;
+        }
+
+        .link-item:hover .link-arrow {
+            transform: translateX(5px);
+        }
+
+        .company-images {
+            position: relative;
+            height: 500px;
+        }
+
+        .img-box {
+            position: absolute;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s ease;
+        }
+
+        .img-box:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Overlapping layout simulation */
+        .c-img-1 {
+            top: 0;
+            right: 0;
+            width: 70%;
+            height: 300px;
+            z-index: 1;
+        }
+
+        .c-img-2 {
+            bottom: 0;
+            left: 10%;
+            width: 60%;
+            height: 250px;
+            z-index: 2;
+            border: 8px solid #fff;
+        }
+
+        .btn-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            width: 100%;
+            max-width: 300px;
+            color: var(--primary-blue);
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .btn-pill:hover {
+            border-color: var(--primary-blue);
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-circle-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.8rem;
+        }
+
+        /* Section: People & Tech (Dark) */
+        .dark-section {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .dark-text-area h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .dark-text-area p {
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* Floating images in dark section */
+        .dark-images {
+            position: relative;
+            height: 600px;
+        }
+
+        .float-img {
+            position: absolute;
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0.9;
+        }
+
+        .f-img-1 {
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 150px;
+        }
+
+        .f-img-2 {
+            bottom: 50px;
+            left: 50px;
+            width: 180px;
+            height: 240px;
+        }
+
+        .f-img-3 {
+            top: 100px;
+            right: 0;
+            width: 250px;
+            height: 180px;
+        }
+
+        /* Section: Products */
+        .products-section {
+            background-color: var(--light-blue);
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+        }
+
+        .products-desc-box {
+            max-width: 400px;
+        }
+
+        /* Product Card (Pad) */
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .prod-img-large {
+            width: 100%;
+            height: 500px;
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .prod-img-large img {
+            max-width: 80%;
+            height: auto;
+            filter: drop-shadow(10px 20px 30px rgba(0, 0, 0, 0.15));
+            transition: transform 0.5s;
+        }
+
+        .prod-img-large:hover img {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .prod-info h3 {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .prod-cat {
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .view-more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 2rem;
+            color: var(--primary-blue);
+            font-weight: 700;
+            border-bottom: 1px solid transparent;
+            padding-bottom: 3px;
+            transition: all 0.3s;
+        }
+
+        .view-more-link:hover {
+            border-bottom-color: var(--primary-blue);
+            gap: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background: #f9f9f9;
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .company-layout,
+            .dark-content,
+            .product-detail,
+            .products-header {
+                grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .company-images,
+            .dark-images {
+                width: 100%;
+                height: 300px;
+            }
+
+            .c-img-1 {
+                width: 80%;
+            }
+
+            .c-img-2 {
+                width: 80%;
+                left: 0;
+            }
+
+            .section-padding {
+                padding: 60px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <span>NITTA</span><span>DuPont</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">製品情報</a></li>
+                <li><a href="#">技術と人</a></li>
+                <li><a href="#">企業情報</a></li>
+                <li><a href="#">採用情報</a></li>
+                <li><a href="#">お問い合わせ</a></li>
+                <li>JP | EN</li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content fade-in-up">
+            <h1 class="hero-title">ともに、ために。</h1>
+        </div>
+    </section>
+
+    <section class="company-section section-padding">
+        <div class="container">
+            <div class="company-layout">
+                <div class="text-col fade-in-up">
+                    <span class="section-label">ニッタ・デュポンについて</span>
+                    <h2 class="section-title">Company</h2>
+                    <p class="section-desc">
+                        最先端の研磨技術を生み出し、研磨用消耗資材の<br>
+                        トータルソリューションを提供している、<br>
+                        ニッタ・デュポンの企業情報を紹介します。
+                    </p>
+
+                    <a href="#" class="btn-pill">
+                        <span>企業情報</span>
+                        <div class="btn-circle-icon">→</div>
+                    </a>
+
+                    <div style="margin-top: 4rem;">
+                        <div class="link-item">
+                            <span>代表メッセージ</span>
+                            <span class="link-arrow">→</span>
+                        </div>
+                        <div class="link-item">
+                            <span>フィロソフィー</span>
+                            <span class="link-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-col fade-in-up">
+                    <div class="company-images">
+                        <div class="img-box c-img-1">
+                            <img src="https://placehold.co/600x400/2b50b8/ffffff?text=Factory+Exterior" alt="Factory">
+                        </div>
+                        <div class="img-box c-img-2">
+                            <img src="https://placehold.co/600x400/eeeeee/333333?text=Robot+Arm" alt="Robot">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="dark-section section-padding">
+        <div class="container">
+            <div class="dark-content">
+                <div class="dark-images fade-in-up">
+                    <div class="img-box float-img f-img-1">
+                        <img src="https://placehold.co/300x200/ffffff/001e42?text=Lab+Worker" alt="Lab">
+                    </div>
+                    <div class="img-box float-img f-img-3">
+                        <img src="https://placehold.co/300x200/ffffff/001e42?text=Analysis" alt="Analysis">
+                    </div>
+                    <div class="img-box float-img f-img-2">
+                        <img src="https://placehold.co/300x400/ffffff/001e42?text=Teamwork" alt="Team">
+                    </div>
+                </div>
+
+                <div class="dark-text-area fade-in-up">
+                    <h2>仲間とともに、<br>顧客のために。</h2>
+                    <p>
+                        研磨ソリューションのリーディングカンパニーとしての誇りを掲げ、<br>
+                        顧客志向のマインド、製品品質のこだわり、<br>
+                        技術開発の使命感を抱きながら、<br>
+                        これまでもこれからもニッタ・デュポンを支える、すべての従業員たち。
+                    </p>
+                    <p>
+                        一人ひとりの社員の品質が、仲間たちとともにチームワークを底上げし、<br>
+                        製品・技術・サービスをさらなる高みへと導いていく。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products-section section-padding">
+        <div class="container">
+            <div class="products-header fade-in-up">
+                <div>
+                    <span class="section-label">製品情報</span>
+                    <h2 class="section-title">Products</h2>
+                </div>
+                <div class="products-desc-box">
+                    <p>研磨パッドや研磨スラリーをはじめ、ワーク保持材・コンディショナーなども取り揃え、研磨用消耗資材におけるトータルソリューションを実現しています。</p>
+                    <a href="#" class="btn-pill" style="margin-top: 20px; background: #fff;">
+                        <span>製品情報一覧</span>
+                        <div class="btn-circle-icon">→</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-detail fade-in-up">
+                <div class="prod-img-large">
+                    <img src="https://placehold.co/500x350/e0e0e0/999?text=Polishing+Pad" alt="Polishing Pad">
+                </div>
+                <div class="prod-info">
+                    <span class="prod-cat">(01) Polishing Pad</span>
+                    <h3>研磨パッド</h3>
+                    <p>発泡ポリウレタンパッド・不織布パッド・スエードパッドをラインナップし、半導体デバイス用・シリコンウェーハ用・化合物ウェーハ用・ガラス基板用など、さまざまなアプリケーションに対して幅広く対応。
+                    </p>
+
+                    <a href="#" class="view-more-link">もっと見る →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; Nitta DuPont Clone for Demonstration.
+    </footer>
+
+    <script>
+        // 1. Intersection Observer for Fade-in Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 2. Canvas Bubble Animation (Imagined Effect based on Hero Image)
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let bubbles = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        class Bubble {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height + height; // Start below or random
+                this.radius = Math.random() * 60 + 20;
+                this.speed = Math.random() * 1 + 0.2;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.color = Math.random() > 0.5 ? '43, 80, 184' : '255, 255, 255'; // Blue or White
+            }
+
+            update() {
+                this.y -= this.speed;
+                this.x += Math.sin(this.y * 0.005) * 0.5; // Gentle sway
+                if (this.y + this.radius < 0) {
+                    this.y = height + this.radius;
+                    this.x = Math.random() * width;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+
+                // Create gradient for bubble look
+                let gradient = ctx.createRadialGradient(
+                    this.x - this.radius / 3,
+                    this.y - this.radius / 3,
+                    this.radius / 10,
+                    this.x,
+                    this.y,
+                    this.radius
+                );
+                gradient.addColorStop(0, `rgba(${this.color}, ${this.opacity})`);
+                gradient.addColorStop(1, `rgba(${this.color}, 0)`);
+
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
+        function initBubbles() {
+            bubbles = [];
+            for (let i = 0; i < 15; i++) {
+                bubbles.push(new Bubble());
+            }
+            // Pre-scatter bubbles vertically
+            bubbles.forEach(b => b.y = Math.random() * height);
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            bubbles.forEach(b => {
+                b.update();
+                b.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        initBubbles();
+        animate();
+
+    </script>
+</body>
+
+</html>

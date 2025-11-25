@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organic Intelligence - 生成AI研修</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#f8fbff',
+                        text: {
+                            main: '#1a1a1a',
+                            sub: '#666666',
+                        },
+                        accent: {
+                            blob1: '#a7dbff',
+                            blob2: '#cbf3f0',
+                            blob3: '#d4e0ff',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+                        eng: ['"Manrope"', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        glass: '0 10px 30px rgba(167, 219, 255, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Settings */
+        body {
+            background-color: #f8fbff;
+            color: #1a1a1a;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Background Blobs Animation */
+        .blob-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 25s infinite ease-in-out alternate;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: #a7dbff;
+            top: -10%;
+            right: -10%;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: #cbf3f0;
+            bottom: 10%;
+            left: -5%;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            width: 600px;
+            height: 600px;
+            background: #d4e0ff;
+            top: 40%;
+            right: 30%;
+            opacity: 0.4;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(167, 219, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(167, 219, 255, 0.2);
+        }
+
+        /* Image Filter Spec: Desaturate and Cool Temp */
+        .img-filter {
+            filter: saturate(0.85) hue-rotate(10deg) brightness(1.05);
+            transition: transform 0.5s ease;
+        }
+
+        .glass-card:hover .img-filter {
+            transform: scale(1.05);
+        }
+
+        /* Scroll Animation: Fade In Up */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Abstract Diagram Lines */
+        .diagram-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 3s ease-out forwards;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans text-text-main">
+
+    <!-- Background -->
+    <div class="blob-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+        <div class="glass-card rounded-none border-t-0 border-x-0 !bg-white/50 mx-auto px-6 py-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <!-- Simple Logo Representation -->
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent-blob1 to-accent-blob3"></div>
+                    <span class="font-eng font-bold text-xl tracking-tight">Organic Intel.</span>
+                </div>
+
+                <nav class="hidden md:flex items-center gap-8 text-text-sub font-medium text-sm">
+                    <a href="#" class="hover:text-accent-blob1 transition-colors">特徴</a>
+                    <a href="#" class="hover:text-accent-blob1 transition-colors">プラン</a>
+                    <a href="#" class="hover:text-accent-blob1 transition-colors">導入事例</a>
+                </nav>
+
+                <a href="#"
+                    class="bg-gradient-to-r from-[#1a1a1a] to-[#4a4a4a] text-white px-6 py-3 rounded-full font-bold text-sm hover:shadow-lg transition-all hover:scale-105">
+                    資料請求
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-28 pb-20">
+        <!-- Hero Section -->
+        <section class="max-w-7xl mx-auto px-6 py-12 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8 fade-up">
+                <div
+                    class="inline-block px-4 py-1 rounded-full bg-accent-blob1/20 text-text-sub text-xs font-bold tracking-wider border border-accent-blob1/30">
+                    AIコンサルタント伴走型研修
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+                    現場の生産性を<br>
+                    <span
+                        class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600">劇的に高める</span><br>
+                    生成AI研修
+                </h1>
+                <p class="text-text-sub text-lg leading-relaxed">
+                    冷たいテクノロジーではなく、人の創造性を拡張する。<br>
+                    現場に即した実践的なカリキュラムで、<br>
+                    組織の「知」をアップデートします。
+                </p>
+                <div class="pt-4">
+                    <button
+                        class="glass-card !bg-white px-8 py-4 font-bold text-text-main border border-blue-100 hover:bg-blue-50 transition-colors">
+                        まずは無料相談から →
+                    </button>
+                </div>
+            </div>
+            <div class="relative fade-up" style="transition-delay: 0.2s;">
+                <div class="glass-card p-4 relative z-10 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                        alt="チーム学習の様子" class="w-full h-auto rounded-2xl img-filter object-cover aspect-[4/3]">
+                </div>
+                <!-- Abstract Decoration -->
+                <svg class="absolute -bottom-10 -left-10 w-40 h-40 opacity-50 z-0" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="#a7dbff" stroke-width="1" />
+                    <circle cx="50" cy="50" r="30" fill="none" stroke="#cbf3f0" stroke-width="1" />
+                </svg>
+            </div>
+        </section>
+
+        <!-- Problems Section -->
+        <section class="max-w-7xl mx-auto px-6 py-20">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl font-bold mb-4">こんな課題ありませんか？</h2>
+                <div class="w-12 h-1 bg-accent-blob1 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 text-center fade-up" style="transition-delay: 0.1s;">
+                    <div
+                        class="w-16 h-16 bg-white/80 rounded-full mx-auto mb-6 flex items-center justify-center text-3xl shadow-sm">
+                        ?
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">AIが全然<br>分からない</h3>
+                    <p class="text-text-sub text-sm leading-relaxed">
+                        基礎知識がなく、何から手をつけていいか分からない状態を解消します。
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-card p-8 text-center fade-up" style="transition-delay: 0.2s;">
+                    <div
+                        class="w-16 h-16 bg-white/80 rounded-full mx-auto mb-6 flex items-center justify-center text-3xl shadow-sm">
+                        !
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">業務でもっと<br>活かしたい</h3>
+                    <p class="text-text-sub text-sm leading-relaxed">
+                        一般的な使用法だけでなく、自社業務に特化したプロンプト設計を学びます。
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-card p-8 text-center fade-up" style="transition-delay: 0.3s;">
+                    <div
+                        class="w-16 h-16 bg-white/80 rounded-full mx-auto mb-6 flex items-center justify-center text-3xl shadow-sm">
+                        +
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">言語生成以外も<br>使いたい</h3>
+                    <p class="text-text-sub text-sm leading-relaxed">
+                        画像生成やデータ分析など、マルチモーダルな活用方法を習得します。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="max-w-7xl mx-auto px-6 py-20">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl font-bold mb-4">本研修の特徴</h2>
+                <p class="text-text-sub">現場に定着させるための、独自のプログラム</p>
+            </div>
+
+            <!-- Feature 01 -->
+            <div class="flex flex-col md:flex-row items-center gap-12 mb-24 fade-up">
+                <div class="w-full md:w-1/2">
+                    <div class="font-eng text-accent-blob1 font-extrabold text-6xl opacity-20 mb-[-20px] ml-[-10px]">01
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6 relative z-10">コンサルタントが伴走</h3>
+                    <p class="text-text-sub leading-loose mb-6">
+                        ただ講義を聞くだけではありません。<br>
+                        貴社の実業務における課題をヒアリングし、<br>
+                        その場で解決策を一緒に構築するハンズオン形式。<br>
+                        「明日から使える」成果物を研修内で作成します。
+                    </p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2 text-sm font-medium">
+                            <span class="w-2 h-2 bg-accent-blob1 rounded-full"></span> 実務直結のワークショップ
+                        </li>
+                        <li class="flex items-center gap-2 text-sm font-medium">
+                            <span class="w-2 h-2 bg-accent-blob1 rounded-full"></span> 個別フィードバック
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <div class="glass-card p-3 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                            alt="コンサルティング風景" class="w-full h-64 md:h-80 object-cover rounded-2xl img-filter">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 02 -->
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12 fade-up">
+                <div class="w-full md:w-1/2">
+                    <div class="font-eng text-accent-blob2 font-extrabold text-6xl opacity-20 mb-[-20px] ml-[-10px]">02
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6 relative z-10">生成AIのプロが提供</h3>
+                    <p class="text-text-sub leading-loose mb-6">
+                        技術的な裏付けを持つエンジニアと、<br>
+                        ビジネス活用に精通したディレクターがチームを結成。<br>
+                        最新のモデル動向から、セキュリティリスク管理まで、<br>
+                        信頼性の高い情報を提供します。
+                    </p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2 text-sm font-medium">
+                            <span class="w-2 h-2 bg-accent-blob2 rounded-full"></span> 最新技術トレンドの反映
+                        </li>
+                        <li class="flex items-center gap-2 text-sm font-medium">
+                            <span class="w-2 h-2 bg-accent-blob2 rounded-full"></span> セキュリティガイドライン準拠
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <div class="glass-card p-3 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1553877615-30c7395fc213?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                            alt="プロフェッショナルチーム" class="w-full h-64 md:h-80 object-cover rounded-2xl img-filter">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plans Section -->
+        <section class="max-w-7xl mx-auto px-6 py-20">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl font-bold mb-4">3つのプラン</h2>
+                <p class="text-text-sub">組織の規模とニーズに合わせた柔軟な構成</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Plan 1 -->
+                <div
+                    class="glass-card p-8 flex flex-col items-center fade-up hover:border-accent-blob1/50 transition-colors">
+                    <h3 class="text-lg font-bold mb-2">集合型研修</h3>
+                    <p class="text-xs text-text-sub mb-6">基礎を一括で学びたい企業様へ</p>
+                    <div class="font-eng text-3xl font-bold mb-1">¥300,000</div>
+                    <div class="text-xs text-text-sub mb-8">/ 1回 (2時間)</div>
+
+                    <ul class="text-sm text-left w-full space-y-3 mb-8 text-text-sub">
+                        <li class="flex items-center gap-2">✓ オンライン/オフライン対応</li>
+                        <li class="flex items-center gap-2">✓ 参加人数無制限</li>
+                        <li class="flex items-center gap-2">✓ 基礎プロンプト集配布</li>
+                    </ul>
+
+                    <button
+                        class="w-full py-3 rounded-full border border-text-main/20 text-sm font-bold hover:bg-text-main hover:text-white transition-all">
+                        選択する
+                    </button>
+                </div>
+
+                <!-- Plan 2 (Recommended) -->
+                <div class="glass-card p-8 flex flex-col items-center relative overflow-hidden fade-up border-accent-blob1"
+                    style="transition-delay: 0.1s;">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-blob1 to-accent-blob3">
+                    </div>
+                    <div
+                        class="absolute top-3 right-3 bg-accent-blob1/20 text-blue-800 text-[10px] font-bold px-2 py-1 rounded">
+                        RECOMMENDED</div>
+
+                    <h3 class="text-lg font-bold mb-2">伴走型プラン</h3>
+                    <p class="text-xs text-text-sub mb-6">実務への定着を目指すなら</p>
+                    <div class="font-eng text-3xl font-bold mb-1">¥200,000</div>
+                    <div class="text-xs text-text-sub mb-8">/ 1人 (全4回)</div>
+
+                    <ul class="text-sm text-left w-full space-y-3 mb-8 text-text-sub">
+                        <li class="flex items-center gap-2">✓ 個別課題設定</li>
+                        <li class="flex items-center gap-2">✓ チャットサポート無制限</li>
+                        <li class="flex items-center gap-2">✓ 専用GPTs構築支援</li>
+                    </ul>
+
+                    <button
+                        class="w-full py-3 rounded-full bg-text-main text-white text-sm font-bold shadow-lg hover:scale-105 transition-all">
+                        お問い合わせ
+                    </button>
+                </div>
+
+                <!-- Plan 3 -->
+                <div class="glass-card p-8 flex flex-col items-center fade-up" style="transition-delay: 0.2s;">
+                    <h3 class="text-lg font-bold mb-2">動画のみ</h3>
+                    <p class="text-xs text-text-sub mb-6">自習ペースで進めたい方へ</p>
+                    <div class="font-eng text-3xl font-bold mb-1">¥100,000</div>
+                    <div class="text-xs text-text-sub mb-8">/ 1人 (視聴無期限)</div>
+
+                    <ul class="text-sm text-left w-full space-y-3 mb-8 text-text-sub">
+                        <li class="flex items-center gap-2">✓ 全10章の動画コンテンツ</li>
+                        <li class="flex items-center gap-2">✓ 理解度確認テスト</li>
+                        <li class="flex items-center gap-2">✓ 定期アップデート</li>
+                    </ul>
+
+                    <button
+                        class="w-full py-3 rounded-full border border-text-main/20 text-sm font-bold hover:bg-text-main hover:text-white transition-all">
+                        選択する
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="max-w-4xl mx-auto px-6 py-20">
+            <div class="glass-card p-12 text-center relative overflow-hidden fade-up">
+                <div class="relative z-10">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6">組織の「知」を、<br>次のステージへ。</h2>
+                    <p class="text-text-sub mb-8">
+                        まずは無料相談で、貴社の課題をお聞かせください。<br>
+                        最適なプランをご提案いたします。
+                    </p>
+                    <a href="#"
+                        class="inline-block bg-gradient-to-r from-[#1a1a1a] to-[#4a4a4a] text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all hover:scale-105">
+                        無料で相談する
+                    </a>
+                </div>
+                <!-- Decorative Glow -->
+                <div
+                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-accent-blob3 rounded-full blur-[80px] opacity-50 z-0">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white/50 backdrop-blur-sm border-t border-white/50 py-8 text-center text-xs text-text-sub">
+        <p class="font-eng">© 2025 Organic Intelligence Inc. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for Fade Up Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Trigger once
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up').forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Simple Parallax for Blobs (Subtle interaction)
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            const blobs = document.querySelectorAll('.blob');
+
+            blobs[0].style.transform = `translate(${x * 30}px, ${y * 30}px)`; // Blob 1
+            blobs[1].style.transform = `translate(${-x * 30}px, ${-y * 30}px)`; // Blob 2
+            blobs[2].style.transform = `translate(${x * 20}px, ${-y * 20}px)`; // Blob 3
+        });
+    </script>
+</body>
+
+</html>
