@@ -188,6 +188,7 @@
         /* --- ヒーローセクション --- */
         .hero {
             height: 100vh;
+            min-height: 700px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -197,16 +198,17 @@
 
         .hero h1 {
             font-family: var(--font-en);
-            font-size: clamp(3rem, 8vw, 7rem);
+            font-size: clamp(2.25rem, 6vw, 5.25rem);
             line-height: 1.1;
             font-weight: 800;
             letter-spacing: -0.02em;
             margin-bottom: 2rem;
             color: var(--text-main);
+            max-width: 60%;
         }
 
         .hero p {
-            font-family: var(--font-mincho);
+            font-family: var(--font-jp);
             font-size: 1.2rem;
             letter-spacing: 0.05em;
             margin-bottom: 4rem;
@@ -215,14 +217,13 @@
 
         .hero-image-wrap {
             position: absolute;
-            right: 10%;
-            top: 25%;
-            width: 35vw;
-            height: 50vh;
+            right: 0;
+            top: 10vh;
+            width: 45vw;
+            height: 80vh;
             overflow: hidden;
             z-index: -1;
-            border-radius: 200px 200px 0 0;
-            /* U.S Incっぽい有機的な切り抜き */
+            border-radius: 300px 0 0 300px;
         }
 
         .hero-image-wrap img {
@@ -242,27 +243,142 @@
             }
         }
 
-        /* --- Mission Section (PKSHAの哲学 + U.S Incの美学) --- */
-        .mission {
-            padding: 5rem 0;
-            text-align: center;
+        /* --- Vision & Cycle Section (Combined) --- */
+        .vision-cycle-section {
+            padding: 2rem 0 5rem;
+            /* Top padding reduced */
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 100%);
         }
 
-        .mission-title {
+        .vision-cycle-container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .vision-area {
+            padding-left: 5%;
+        }
+
+        .vision-label {
             font-family: var(--font-en);
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
             display: block;
-            color: #888;
         }
 
-        .mission-text {
-            font-family: var(--font-mincho);
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
+        .vision-text {
+            font-family: var(--font-jp);
+            font-size: clamp(1.5rem, 2.5vw, 2.5rem);
             line-height: 1.8;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        /* Cycle Diagram Styles */
+        .cycle-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cycle-circle {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 1px solid var(--text-main);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: #fff;
+            position: absolute;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .cycle-circle:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .cycle-circle h3 {
+            font-family: var(--font-en);
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+            line-height: 1.2;
             font-weight: 600;
+        }
+
+        .cycle-circle p {
+            font-family: var(--font-jp);
+            font-size: 0.8rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .cycle-top {
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cycle-left {
+            bottom: 50px;
+            left: 50px;
+        }
+
+        .cycle-right {
+            bottom: 50px;
+            right: 50px;
+        }
+
+        .cycle-center-text {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-en);
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--text-main);
+            z-index: 1;
+        }
+
+        .cycle-connect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .cycle-connect svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .path-dashed {
+            stroke-dasharray: 8 8;
+            animation: dash 60s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 1000;
+            }
         }
 
         /* --- Service Section (循環図の概念をカードで表現) --- */
@@ -365,101 +481,6 @@
 
         .service-card:hover .card-image img {
             transform: scale(1.05);
-        }
-
-        /* --- 循環エリア（3つの円） --- */
-        .cycle-section {
-            padding: 5rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cycle-container {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            height: 700px;
-            margin: 0 auto;
-        }
-
-        .cycle-circle {
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            position: absolute;
-            z-index: 2;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .cycle-circle:hover {
-            transform: scale(1.05);
-            z-index: 10;
-        }
-
-        .cycle-circle h3 {
-            font-family: var(--font-en);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
-        }
-
-        .cycle-circle p {
-            font-family: var(--font-jp);
-            font-size: 0.9rem;
-            color: var(--text-sub);
-        }
-
-        .cycle-top {
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .cycle-left {
-            bottom: 50px;
-            left: 50px;
-        }
-
-        .cycle-right {
-            bottom: 50px;
-            right: 50px;
-        }
-
-        /* 柔らかい点線のアニメーション */
-        .cycle-connect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .cycle-connect svg {
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-        }
-
-        .path-anim {
-            stroke-dasharray: 10;
-            animation: dash 60s linear infinite;
-        }
-
-        @keyframes dash {
-            to {
-                stroke-dashoffset: 1000;
-            }
         }
 
         /* --- News Section --- */
@@ -707,22 +728,36 @@
                 border-radius: 20px;
             }
 
-            .cycle-container {
-                height: auto;
-                flex-direction: column;
-                padding-bottom: 2rem;
+            .vision-cycle-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cycle-wrapper {
+                height: 400px;
             }
 
             .cycle-circle {
-                position: relative;
-                width: 240px;
-                height: 240px;
-                margin: 0 auto 2rem;
-                transform: none !important;
-                top: auto;
-                left: auto;
-                right: auto;
-                bottom: auto;
+                width: 150px;
+                height: 150px;
+            }
+
+            .cycle-circle h3 {
+                font-size: 1rem;
+            }
+
+            .cycle-top {
+                top: 10px;
+            }
+
+            .cycle-left {
+                bottom: 20px;
+                left: 10px;
+            }
+
+            .cycle-right {
+                bottom: 20px;
+                right: 10px;
             }
 
             .cycle-connect {
@@ -789,51 +824,52 @@
         </div>
 
         <div class="fade-in-up">
-            <h1>CREATE<br>GOOD<br>RESONANCE.</h1>
-            <p>共鳴する知性、拡張する体験。</p>
+            <h1>Japan is Lovely.<br>We'll Show Them.</h1>
+            <p>日本の可能性を解き放つ<br>AI時代を生きる、私たちの手と意思で。</p>
         </div>
     </section>
 
-    <section class="mission fade-in-up" id="about">
-        <div class="container">
-            <span class="mission-title">OUR PHILOSOPHY</span>
-            <p class="mission-text">
-                人は、ソフトウェアと共に進化する。<br>
-                美意識と論理を編み込み、<br>
-                まだ見ぬ「心地よさ」を社会に実装する。
-            </p>
-        </div>
-    </section>
-
-    <section class="cycle-section fade-in-up">
-        <div class="cycle-container">
-            <div class="cycle-circle cycle-top">
-                <h3>Bidev</h3>
-                <p>事業開発</p>
+    <section class="vision-cycle-section fade-in-up" id="about">
+        <div class="vision-cycle-container">
+            <!-- Left: Vision Text -->
+            <div class="vision-area">
+                <span class="vision-label">About</span>
+                <div class="vision-text-wrap">
+                    <span class="vision-label" style="font-size: 1.5rem; margin-bottom: 1rem;">Vision</span>
+                    <p class="vision-text">
+                        全ての企業と人に、<br>
+                        やりたかった新しい挑戦と、<br>
+                        ほしかった感動体験を届ける。
+                    </p>
+                </div>
             </div>
 
-            <div class="cycle-circle cycle-left">
-                <h3>Execution</h3>
-                <p>実行</p>
-            </div>
+            <!-- Right: Cycle Diagram -->
+            <div class="cycle-wrapper">
+                <div class="cycle-circle cycle-top">
+                    <h3>Technology</h3>
+                    <p>AI / DX</p>
+                </div>
 
-            <div class="cycle-circle cycle-right">
-                <h3>Tech</h3>
-                <p>AI / DX</p>
-            </div>
+                <div class="cycle-circle cycle-left">
+                    <h3>Business<br>Development</h3>
+                    <p>新規事業開発</p>
+                </div>
 
-            <div class="cycle-connect">
-                <svg viewBox="0 0 900 700">
-                    <!-- Top to Left -->
-                    <path d="M 450 180 Q 200 350 180 570" fill="none" stroke="#ff9a9e" stroke-width="2"
-                        class="path-anim" opacity="0.5" />
-                    <!-- Left to Right -->
-                    <path d="M 180 570 Q 450 650 720 570" fill="none" stroke="#a18cd1" stroke-width="2"
-                        class="path-anim" opacity="0.5" style="animation-delay: -10s;" />
-                    <!-- Right to Top -->
-                    <path d="M 720 570 Q 700 350 450 180" fill="none" stroke="#fad0c4" stroke-width="2"
-                        class="path-anim" opacity="0.5" style="animation-delay: -20s;" />
-                </svg>
+                <div class="cycle-circle cycle-right">
+                    <h3>Execution</h3>
+                    <p>実行・遂行</p>
+                </div>
+
+                <div class="cycle-center-text">JIL</div>
+
+                <div class="cycle-connect">
+                    <svg viewBox="0 0 600 600">
+                        <!-- Triangle Path -->
+                        <path d="M 300 130 L 100 480 L 500 480 Z" fill="none" stroke="#1a1a1a" stroke-width="1"
+                            class="path-dashed" />
+                    </svg>
+                </div>
             </div>
         </div>
     </section>
@@ -996,6 +1032,7 @@
             if (blob3) blob3.style.transform = `translate(${x * 15}px, ${-y * 15}px)`;
         });
     </script>
+
 </body>
 
 </html>
